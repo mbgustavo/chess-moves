@@ -53,9 +53,9 @@ export class PositionsController {
       const piece = this.pieces[pieceName]
       if (!piece) return { status: 400, error: 'invalid-piece' };
 
-      return { status: 400, data: this.calculateNextPositions(piece, pos) };
+      return { status: 200, data: this.calculateNextPositions(piece, pos) };
     } catch (e) {
-      return { status: 500, error: e };
+      return { status: 500, error: e.toString() };
     }
   }
 

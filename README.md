@@ -30,7 +30,15 @@ O presente projeto consta de uma API que tem como intenção verificar possívei
 
 * **src/routes/**: Mapeamento de rotas para as *controllers*;
 
-* **src/index.ts**: Ponto de entrada da API, cria e executa servidor.
+* **src/app.ts**: Criação da aplicação, configura rotas e portas;
+
+* **src/app.spec.ts**: Testes unitários para a aplicação;
+
+* **src/swagger.json**: Documentação swagger que é utilizada para exibição;
+
+* **src/server.ts**: Ponto de entrada da API, cria e executa servidor;
+
+* **swagger.yaml**: Documentação swagger em formato yaml, recomendável utilizar para edição devido a simplicidade, e após isso exportar para um json.
 
 ----
 

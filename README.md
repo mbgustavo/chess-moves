@@ -6,13 +6,29 @@ O presente projeto consta de uma API que tem como intenção verificar possívei
 
 ## Pré-requisitos
 
+* É necessário ter node e npm instalados. O último release foi realizado com a versão 12.16.1 do node e 6.13.4 do npm.
+
 ----
 
 ## Procedimentos
 
+* **Instalar dependências**: `npm i`
+
+* **Executar em ambiente de desenvolvimento**: `npm run dev`
+
+* **Compilar**: `npm run build`
+
+* **Compilar e executar**: `npm start`
+
 ----
 
 ## Estrutura de Arquivos
+
+* **src/controllers/**: Validações de parâmetros de requisição e execução de lógicas , enviando resposta com o código correto;
+
+* **src/routes/**: Mapeamento de rotas para os controllers;
+
+* **src/index.ts**: Ponto de entrada da API, cria e executa servidor.
 
 ----
 

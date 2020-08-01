@@ -20,6 +20,8 @@ O presente projeto consta de uma API que tem como intenção verificar possívei
 
 * **Compilar e executar**: `npm start`
 
+* **Executar testes unitários**: `npm run test`
+
 ----
 
 ## Estrutura de Arquivos

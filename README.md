@@ -34,6 +34,34 @@ O presente projeto consta de uma API que tem como intenção verificar possívei
 
 ## Requisições disponíveis
 
+* **URL**
+
+  /positions/:piece&:position
+
+* **Método:**
+
+  `GET`
+  
+*  **Parâmetros da URL**
+
+   **Obrigatórios:**
+ 
+   `piece=[string]`
+   `position=[string]`
+
+* **Sample Call:**
+
+  ```javascript
+    $.ajax({
+      url: "/positions/horse&A7",
+      dataType: "json",
+      type : "GET",
+      success : function(r) {
+        console.log(r);
+      }
+    });
+  ```
+
 ----
 
 ## Próximos Passos

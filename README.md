@@ -75,6 +75,8 @@ O presente projeto consta de uma API que tem como intenção verificar possívei
     });
   ```
 
+A documentação swagger da API contendo as requisições também pode ser visualizada acessando `/api-docs`. Ex: *localhost:4000/api-docs*
+
 ----
 
 ## Próximos Passos

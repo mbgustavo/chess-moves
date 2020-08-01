@@ -45,35 +45,46 @@ export class PositionsController {
   }
 
   /** Get possible next positions for the piece received */
-  public getNextPositions(pieceName: string, position: string): string[] {
-    let pos = this.validateConvertPosition(position)
-    if (!pos) return ['invalid position']
+  public getNextPositions(pieceName: string, position: string): { status: number, [key: string]: any } {
+    try {
+      const pos = this.validateConvertPosition(position)
+      if (!pos) return { status: 400, error: 'invalid-position' };
 
-    const piece = this.pieces[pieceName]
-    if (!piece) return ['invalid piece'];
+      const piece = this.pieces[pieceName]
+      if (!piece) return { status: 400, error: 'invalid-piece' };
 
+      return { status: 400, data: this.calculateNextPositions(piece, pos) };
+    } catch (e) {
+      return { status: 500, error: e };
+    }
+  }
+
+  /** Calculate the possible next positions based on the piece and its current position */
+  private calculateNextPositions(piece: Piece, pos: NumericPosition): string[] {
     let nextPositions: string[] = [];
 
     // Verify possible positions for each possible move
     piece.possibleMoves.forEach(possibleMove => {
       let nextPosNumeric: NumericPosition;
-      
+
       // if a piece with strictMoves is considered, this loop should have only 1 iteration:
       // let numDirections = (piece.strictMoves ? 1 : signInverters.length)
-      for (let i = 0; i < signInverters.length; i ++) {
+      for (let i = 0; i < signInverters.length; i++) {
         // It is not necessary to calculate inverted signs for 0 move values
-        if ((signInverters[i].x === -1 && possibleMove.x === 0) || 
+        if ((signInverters[i].x === -1 && possibleMove.x === 0) ||
           (signInverters[i].y === -1 && possibleMove.y === 0)) {
           continue;
         };
 
         let currentPos = pos;
+
         // Get possible next position until movement is impossible
         while (true) {
           nextPosNumeric = {
             x: currentPos.x + possibleMove.x * signInverters[i].x,
             y: currentPos.y + possibleMove.y * signInverters[i].y
           };
+
           if (this.isWithinTable(nextPosNumeric)) {
             nextPositions.push(this.convertToChessNotation(nextPosNumeric));
             if (piece.multipleMoves) {

@@ -11,7 +11,7 @@ router.get('/:piece&:position', async (req: Request, res: Response,): Promise<Re
   const position = req.params.position;
   const result = positionsController.getNextPositions(piece, position);
 
-  return res.json({ result });
+  return res.status(result.status).json({ data: result.data, error: result.error });
 });
 
 export default router;

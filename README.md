@@ -49,11 +49,24 @@ O presente projeto consta de uma API que tem como intenção verificar possívei
    `piece=[string]`
    `position=[string]`
 
-* **Sample Call:**
+* **Resposta de sucesso**
+
+  * **Status:** 200 OK <br />
+    **Conteúdo:** `{ "data": ["D2", "C3", "A3"] }`
+
+* **Resposta de Erro:**
+
+  * **Status:** 400 Bad Request <br />
+    **Conteúdo:** `{ "error" : "invalid-position" }`
+  ou
+  * **Status:** 500 Internal Server Error <br />
+    **Conteúdo:** `{ "error" : "<error message>" }`
+
+* **Exemplo de chamada:**
 
   ```javascript
     $.ajax({
-      url: "/positions/horse&A7",
+      url: "/positions/horse&B1",
       dataType: "json",
       type : "GET",
       success : function(r) {

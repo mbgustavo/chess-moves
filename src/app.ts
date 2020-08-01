@@ -1,9 +1,8 @@
-import http from 'http';
 import express from 'express';
 import  swaggerUi from 'swagger-ui-express';
 
 import { AppRouter } from './routes';
-import swaggerDocument from '../swagger.json';
+import swaggerDocument from './swagger.json';
 
 class App {
   public express: express.Application;

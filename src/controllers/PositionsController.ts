@@ -9,8 +9,10 @@ interface Piece {
   possibleMoves: NumericPosition[], 
   // indicates if the piece can perform the possible moves multiples times (typically used for queens, bishops...)
   multipleMoves: boolean,
-  // indicates if the piece must move strictly in the moves provided, without changing signs (typically used for pawns)
-  strictMoves: boolean
+  // the fields below are necessary only if pawns are considered
+  // strictMoves: boolean, // indicates if the piece must move strictly in the moves provided, without changing signs
+  // attackMoves: NumericPosition[], // move that piece can do only if there is an enemy there
+  // firstMove: boolean // indicates if it is the first move of the piece (pawns can move 2 times then)
 }
 
 const charCodeAtA = 'A'.charCodeAt(0); // Char code at uppercase A, first valid column
@@ -22,8 +24,23 @@ export class PositionsController {
   private pieces: { [key: string]: Piece } = {
     horse: {
       possibleMoves: [{ x: 2, y: 1}, { x: 1, y: 2}],
-      multipleMoves: false,
-      strictMoves: false
+      multipleMoves: false
+    // },
+    // knight: {
+    //   possibleMoves: [{ x: 1, y: 0}, { x: 0, y: 1}],
+    //   multipleMoves: true
+    // },
+    // bishop: {
+    //   possibleMoves: [{ x: 1, y: 1}],
+    //   multipleMoves: true
+    // },
+    // queen: {
+    //   possibleMoves: [{ x: 1, y: 1}, { x: 1, y: 0}, { x: 0, y: 1}],
+    //   multipleMoves: true
+    // },
+    // king: {
+    //   possibleMoves: [{ x: 1, y: 1}, { x: 1, y: 0}, { x: 0, y: 1}],
+    //   multipleMoves: false
     }
   }
 
@@ -35,27 +52,38 @@ export class PositionsController {
     const piece = this.pieces[pieceName]
     if (!piece) return ['invalid piece'];
 
-    const numDirections = piece.strictMoves ? 1 : 4;
     let nextPositions: string[] = [];
 
+    // Verify possible positions for each possible move
     piece.possibleMoves.forEach(possibleMove => {
       let nextPosNumeric: NumericPosition;
       
-      for (let i = 0; i < numDirections; i ++) {
+      // if a piece with strictMoves is considered, this loop should have only 1 iteration:
+      // let numDirections = (piece.strictMoves ? 1 : signInverters.length)
+      for (let i = 0; i < signInverters.length; i ++) {
+        // It is not necessary to calculate inverted signs for 0 move values
+        if ((signInverters[i].x === -1 && possibleMove.x === 0) || 
+          (signInverters[i].y === -1 && possibleMove.y === 0)) {
+          continue;
+        };
+
+        let currentPos = pos;
+        // Get possible next position until movement is impossible
         while (true) {
           nextPosNumeric = {
-            x: pos.x + possibleMove.x * signInverters[i].x,
-            y: pos.y + possibleMove.y * signInverters[i].y
+            x: currentPos.x + possibleMove.x * signInverters[i].x,
+            y: currentPos.y + possibleMove.y * signInverters[i].y
           };
           if (this.isWithinTable(nextPosNumeric)) {
             nextPositions.push(this.convertToChessNotation(nextPosNumeric));
             if (piece.multipleMoves) {
-              pos = nextPosNumeric;
+              // Possible multiple moves, so calculate the next one based on the position got now
+              currentPos = nextPosNumeric;
             } else {
-              break;
+              break; // Only one move is possible, break
             }
           } else {
-            break;
+            break; // We are not in the table anymore to keep moving
           }
         }
       }

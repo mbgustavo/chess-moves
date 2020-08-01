@@ -1,0 +1,58 @@
+swagger: "2.0"
+info:
+  description: "API que verifica possíveis movimentos de peças em um tabuleiro de xadrez."
+  version: ""
+  title: "Validador de Movimentos de Xadrez"
+tags:
+- name: "Posições"
+  description: "Próximas posições possíveis para a peça"
+schemes:
+- "http"
+paths:
+  /positions/{piece}&{position}:      
+    get:
+      tags:
+      - "Posições"
+      summary: "Fornece próximas posições possíveis para determinada peça"
+      description: "Fornece um array de próximas posições possíveis para uma determinada peça em notação algébricas."
+      produces:
+      - "application/json"
+      parameters:
+      - name: "piece"
+        in: "path"
+        description: "Peça a ser movida"
+        required: true
+        type: string
+      - name: "position"
+        in: "path"
+        description: "Posição atual da peça"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Array com próximas posições possíveis em notação algébrica"
+          schema:
+            items:
+              $ref: "#/definitions/NextPositions"
+        400:
+          description: "Mensagem de erro de requisição inválida"
+          schema:
+            type: object
+            example: { error: "invalid-position" }
+        500:
+          description: "Erro inesperado do lado do servidor"
+          schema:
+            type: object
+            example: { error: "TypeError: Cannot read property 'x' of null" }
+definitions:
+  NextPositions:
+    type: object
+    properties:
+      data:
+        type: array
+        description: "Array de posições em notação algébrica"
+        items:
+          type: string
+          example: "D2"
+        example: ["D2", "C3", "A3"]
+        

@@ -6,13 +6,13 @@ import { AppRouter } from './routes';
 class App {
   public express: express.Application;
 
-  public constructor () {
+  public constructor() {
     this.express = express();
     this.express.set('port', process.env.PORT || '4000')
     this.routes();
   }
 
-  private routes (): void {
+  private routes(): void {
     this.express.use('/', AppRouter);
   }
 }

@@ -24,7 +24,9 @@ Execute os seguintes comando dentro dessa pasta para:
 
 * **Executar testes unitários**: `npm run test`
 
-Com a aplicação executando, abra o arquivo **index.html** para poder realizar testes visuais.
+Com a aplicação executando, abra o arquivo **index.html** para poder realizar testes visuais:
+
+![visual](https://user-images.githubusercontent.com/44649580/89113037-eea56180-d441-11ea-8d34-c9c70f820248.png)
 
 ----
 

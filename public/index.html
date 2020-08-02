@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>Tabuleiro de Xadrez</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      padding-top: 50px;
+      box-sizing: border-box;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(120deg, rgba(227,227,227,1) 0%, rgba(203,203,203,1) 100%);
+    }
+    
+    #piece-selector {
+      display: flex;
+      margin: 10px;
+      margin-bottom: 20px;
+    }
+
+    #piece-selector > input[type="radio"] {
+      margin-left: 10px;
+    }
+
+    #table {
+      display: grid;
+      grid-template-columns: repeat(8, 70px);
+      grid-template-rows: repeat(8, 70px);
+      margin: 10px;
+    }
+
+    .cell {
+      user-select: none;
+      cursor: pointer;
+      display: flex;
+      height: 100%;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      font-size: 1.3em;
+      border: 1px solid;
+      box-sizing: border-box;
+      color: #333;
+    }
+
+    .cell:hover {
+      background-color: #CCC;
+      color: #000;
+    }
+
+    .cell.selected {
+      background-color: #333;
+      color: #FFF;
+    }
+    
+    .cell.next-move {
+      background-color: rgb(35, 168, 231);
+      color: #FFF;
+    }
+  </style>
+</head>
+<body>
+  <div id="piece-selector">
+    <input type="radio" id="horse" name="piece" value="horse">
+    <label for="horse">Cavalo</label><br>
+    <!-- <input type="radio" id="knight" name="piece" value="knight">
+    <label for="knight">Torre</label><br>
+    <input type="radio" id="bishop" name="piece" value="bishop">
+    <label for="bishop">Bispo</label> 
+    <input type="radio" id="queen" name="piece" value="queen">
+    <label for="queen">Rainha</label> 
+    <input type="radio" id="king" name="piece" value="king">
+    <label for="king">Rei</label>  -->
+  </div>
+  <div id="table"></div>
+</body>
+<script>
+  const apiAddress = 'http://localhost:4000';
+  const table = document.getElementById('table');
+  const tableSize = 8;
+  const charCodeAtA = 'A'.charCodeAt(0);
+
+  for (let i = tableSize - 1; i >= 0; i--) {
+    for (let j = 0; j < tableSize; j++) {
+      const cell = document.createElement('div');
+      const cellName = `${String.fromCharCode(j + charCodeAtA)}${i+1}`;
+      cell.setAttribute('id', cellName);
+      cell.innerHTML = cellName;
+      cell.classList.add('cell');
+
+      cell.onclick = (e) => {
+        // Remove selection from all other cells
+        document.querySelectorAll('.cell').forEach(cell => {
+          cell.classList.remove('selected');
+          cell.classList.remove('next-move');
+        });
+
+        // Select this cell
+        document.getElementById(e.target.id).classList.add('selected');
+
+        const piece = document.querySelector('input[name="piece"]:checked').value;
+
+        // Request the possible next positions from API
+        return fetch(`${apiAddress}/positions/${piece}&${e.target.id}`)
+          .then(res => res.text())
+          .then(result => {
+            JSON.parse(result).data.forEach(cell => {
+              document.getElementById(cell).classList.add('next-move');
+            });
+          })
+          .catch(err => {
+            console.error(err);
+          });
+      }
+
+      table.appendChild(cell);
+    }
+  }
+</script>
+</html>

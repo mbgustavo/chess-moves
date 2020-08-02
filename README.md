@@ -32,7 +32,11 @@ Com a aplicação executando, abra o arquivo **index.html** para poder realizar 
 
 * **public/index.html**: Arquivo html com uma interface para testes rápidos e visuais;
 
+* **src/collections/**: Coleções de objetos com determinados comportamentos;
+
 * **src/controllers/**: Validações de parâmetros de requisição e execução de lógicas, enviando resposta com o código correto;
+
+* **src/core/**: Constantes e interfaces da API;
 
 * **src/routes/**: Mapeamento de rotas para as *controllers*;
 

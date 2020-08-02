@@ -1,56 +1,15 @@
-// Numeric indexes for piece position
-interface NumericPosition {
-  x: number,
-  y: number
-}
-
-interface Piece {
-  // possible dx and dy for the piece in one move
-  possibleMoves: NumericPosition[],
-  // indicates if the piece can perform the possible moves multiples times (typically used for queens, bishops...)
-  multipleMoves: boolean,
-  // the fields below are necessary only if pawns are considered
-  // strictMoves: boolean, // indicates if the piece must move strictly in the moves provided, without changing signs
-  // attackMoves: NumericPosition[], // move that piece can do only if there is an enemy there
-  // firstMove: boolean // indicates if it is the first move of the piece (pawns can move 2 times then)
-}
-
-const charCodeAtA = 'A'.charCodeAt(0); // Char code at uppercase A, first valid column
-// sigInverters allows the piece to move in different directions invertings possibleMoves signs
-const signInverters = [{ x: 1, y: 1 }, { x: 1, y: -1 }, { x: -1, y: 1 }, { x: -1, y: -1 }]
+import pieces from '../collections/pieces';
+import { NumericPosition, Piece } from '../core/interfaces';
+import { charCodeAtA, signInverters } from '../core/constants';
 
 export class PositionsController {
-  // pieces described
-  private pieces: { [key: string]: Piece } = {
-    horse: {
-      possibleMoves: [{ x: 2, y: 1 }, { x: 1, y: 2 }],
-      multipleMoves: false
-    // },
-    // knight: {
-    //   possibleMoves: [{ x: 1, y: 0 }, { x: 0, y: 1 }],
-    //   multipleMoves: true
-    // },
-    // bishop: {
-    //   possibleMoves: [{ x: 1, y: 1 }],
-    //   multipleMoves: true
-    // },
-    // queen: {
-    //   possibleMoves: [{ x: 1, y: 1 }, { x: 1, y: 0 }, { x: 0, y: 1 }],
-    //   multipleMoves: true
-    // },
-    // king: {
-    //   possibleMoves: [{ x: 1, y: 1 }, { x: 1, y: 0 }, { x: 0, y: 1 }],
-    //   multipleMoves: false
-    }
-  }
-
   /** Get possible next positions for the piece received */
   public getNextPositions(pieceName: string, position: string): { status: number, [key: string]: any } {
     try {
       const pos = this.validateConvertPosition(position)
       if (!pos) return { status: 400, error: 'invalid-position' };
 
-      const piece = this.pieces[pieceName]
+      const piece = pieces[pieceName]
       if (!piece) return { status: 400, error: 'invalid-piece' };
 
       return { status: 200, data: this.calculateNextPositions(piece, pos) };

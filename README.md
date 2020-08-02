@@ -12,6 +12,8 @@ O presente projeto consta de uma API que tem como intenção verificar possívei
 
 ## Procedimentos
 
+Execute os seguintes comando dentro dessa pasta para:
+
 * **Instalar dependências**: `npm i`
 
 * **Executar em ambiente de desenvolvimento**: `npm run dev`
@@ -22,9 +24,13 @@ O presente projeto consta de uma API que tem como intenção verificar possívei
 
 * **Executar testes unitários**: `npm run test`
 
+Com a aplicação executando, abra o arquivo **index.html** para poder realizar testes visuais.
+
 ----
 
 ## Estrutura de Arquivos
+
+* **public/index.html**: Arquivo html com uma interface para testes rápidos e visuais;
 
 * **src/controllers/**: Validações de parâmetros de requisição e execução de lógicas, enviando resposta com o código correto;
 
@@ -116,8 +122,7 @@ Após realizade o *merge*, será criada uma tag com o mesmo número descrito no 
 
 ## Próximos Passos
 
-- Criar uma interface para melhor visualização dos resultados obtidos e facilitar os testes;
-- O código já está adaptado para o cálculo de possíveis posições para quase todas as peças, excluindo apenas os peões, bastando descomentar o código em **src/controllers/PositionsController.ts** e realizar os testes necessários para aprovação da funcionalidade;
+- O código já está adaptado para o cálculo de possíveis posições para quase todas as peças, excluindo apenas os peões, bastando descomentar o código em **src/controllers/PositionsController.ts** (e também na interface de testes em **index.html**) e realizar os testes necessários para aprovação da funcionalidade;
 - Para calcular o movimento de peões, diferentes situações devem ser consideradas, pois os mesmos possuem movimento estrito para frente, podendo se movimentar duas casas para frente se for seu primeiro movimento, enquanto que o ataque à outras peças só pode ser realizado na diagonal (algumas dessas propriedades já estão presentes em forma de comentário em **src/controllers/PositionsController.ts**);
 - Considerar a presença de outras peças no tabuleiro, verificando se as mesmas são aliadas ou inimigas; pois se forem amigas, o movimento é impossível, se forem inimigas, o movimento termina ali eliminando aquela peça (lembrar de considerar o movimento dos peões para ataque);
 - ...

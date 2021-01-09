@@ -114,7 +114,7 @@ A documentação *swagger* da API contendo as requisições também pode ser vis
 - Caso hajam conflitos no *pull request*, o criador do mesmo deve se encarregar de resolvê-los realizando um `git fetch upstream | git rebase upstream/develop`;
 - Aguarde as alterações serem aceitas.
 
-Todos os *pull requests* aceitos na *branch* **develop** entrarão para a master quando for gerada uma nova versão.
+Todos os *pull requests* aceitos na *branch* **develop** entrarão para a **master** quando for gerada uma nova versão.
 
 ----
 
@@ -128,7 +128,6 @@ Após realizade o *merge*, será criada uma tag com o mesmo número descrito no 
 
 ## Próximos Passos
 
-- O código já está adaptado para o cálculo de possíveis posições para quase todas as peças, excluindo apenas os peões, bastando descomentar o código em **src/controllers/PositionsController.ts** (e também na interface de testes em **index.html**) e realizar os testes necessários para aprovação da funcionalidade;
 - Para calcular o movimento de peões, diferentes situações devem ser consideradas, pois os mesmos possuem movimento estrito para frente, podendo se movimentar duas casas para frente se for seu primeiro movimento, enquanto que o ataque à outras peças só pode ser realizado na diagonal (algumas dessas propriedades já estão presentes em forma de comentário em **src/controllers/PositionsController.ts**);
 - Considerar a presença de outras peças no tabuleiro, verificando se as mesmas são aliadas ou inimigas; pois se forem amigas, o movimento é impossível, se forem inimigas, o movimento termina ali eliminando aquela peça (lembrar de considerar o movimento dos peões para ataque);
 - ...

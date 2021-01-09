@@ -82,8 +82,23 @@
 <script>
   const apiAddress = 'http://localhost:4000';
   const table = document.getElementById('table');
+  const radios = document.querySelectorAll('input[type="radio"]');
   const tableSize = 8;
   const charCodeAtA = 'A'.charCodeAt(0);
+
+  /** Function to request next moves from API. Must recieve piece name and position */
+  const fetchNextMoves = (piece, position) => {
+    return fetch(`${apiAddress}/positions/${piece}&${position}`)
+      .then(res => res.text())
+      .then(result => {
+        JSON.parse(result).data.forEach(cell => {
+          document.getElementById(cell).classList.add('next-move');
+        });
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  }
 
   for (let i = tableSize - 1; i >= 0; i--) {
     for (let j = 0; j < tableSize; j++) {
@@ -105,21 +120,25 @@
 
         const piece = document.querySelector('input[name="piece"]:checked').value;
 
-        // Request the possible next positions from API
-        return fetch(`${apiAddress}/positions/${piece}&${e.target.id}`)
-          .then(res => res.text())
-          .then(result => {
-            JSON.parse(result).data.forEach(cell => {
-              document.getElementById(cell).classList.add('next-move');
-            });
-          })
-          .catch(err => {
-            console.error(err);
-          });
+        return fetchNextMoves(piece, e.target.id);
       }
 
       table.appendChild(cell);
     }
+  }
+
+  // Handle radio change
+  for (radio of radios) {
+    radio.addEventListener('change', e => {
+      // Clear next moves from previous poiece
+      document.querySelectorAll('.cell').forEach(cell => {
+        cell.classList.remove('next-move');
+      });
+
+      const cell = document.querySelector('.selected')
+
+      if (cell) fetchNextMoves(e.target.value, cell.id);
+    })
   }
 </script>
 </html>

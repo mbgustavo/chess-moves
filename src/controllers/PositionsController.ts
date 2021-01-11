@@ -26,9 +26,8 @@ export class PositionsController {
     piece.possibleMoves.forEach(possibleMove => {
       let nextPosNumeric: NumericPosition;
 
-      // if a piece with strictMoves is considered, this loop should have only 1 iteration:
-      // let numDirections = (piece.strictMoves ? 1 : signInverters.length)
-      for (let i = 0; i < signInverters.length; i++) {
+      let numDirections = (piece.strictMoves ? 1 : signInverters.length)
+      for (let i = 0; i < numDirections; i++) {
         // It is not necessary to calculate inverted signs for 0 move values
         if ((signInverters[i].x === -1 && possibleMove.x === 0) ||
           (signInverters[i].y === -1 && possibleMove.y === 0)) {
@@ -46,9 +45,21 @@ export class PositionsController {
 
           if (this.isWithinTable(nextPosNumeric)) {
             nextPositions.push(this.convertToChessNotation(nextPosNumeric));
+
             if (piece.multipleMoves) {
               // Possible multiple moves, so calculate the next one based on the position got now
               currentPos = nextPosNumeric;
+            } else if (piece.duplicateFirstMove && pos.y === 1) {
+              // First pawn move
+              currentPos = nextPosNumeric;
+
+              nextPosNumeric = {
+                x: currentPos.x + possibleMove.x,
+                y: currentPos.y + possibleMove.y
+              };
+
+              nextPositions.push(this.convertToChessNotation(nextPosNumeric));
+              break;
             } else {
               break; // Only one move is possible, break
             }
@@ -57,6 +68,17 @@ export class PositionsController {
           }
         }
       }
+    })
+
+    // Verify possible positions exclusive to attack enemies
+    if (piece.attackMoves) piece.attackMoves.forEach(attackMove => {
+      const nextPosNumeric = {
+        x: pos.x + attackMove.x,
+        y: pos.y + attackMove.y
+      };
+
+      // There should be a verification for enemies at the position also
+      if (this.isWithinTable(nextPosNumeric)) nextPositions.push(this.convertToChessNotation(nextPosNumeric));
     })
 
     return nextPositions;

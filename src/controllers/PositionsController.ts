@@ -9,6 +9,8 @@ export class PositionsController {
       const pos = this.validateConvertPosition(position)
       if (!pos) return { status: 400, error: 'invalid-position' };
 
+      if (pieceName === 'pawn') return { status: 200, data: this.calculatePawnNextMoves(pos) };
+
       const piece = pieces[pieceName]
       if (!piece) return { status: 400, error: 'invalid-piece' };
 
@@ -58,6 +60,49 @@ export class PositionsController {
         }
       }
     })
+
+    return nextPositions;
+  }
+
+  private calculatePawnNextMoves(pos: NumericPosition): string[] {
+    let nextPositions: string[] = [];
+    let firstMove: Boolean;
+
+    // Pawns start at position 1
+    pos.y === 1 ? firstMove = true : firstMove = false;
+
+    let nextPosNumeric: NumericPosition;
+    let currentPos = pos;
+
+    nextPosNumeric = {
+      x: currentPos.x,
+      y: currentPos.y + 1
+    };
+
+    if (this.isWithinTable(nextPosNumeric)) {
+      nextPositions.push(this.convertToChessNotation(nextPosNumeric));
+      if (firstMove) {
+        // First move, possible to move twice, it is not necessary to check if it is within table
+        nextPosNumeric = {
+          x: currentPos.x,
+          y: currentPos.y + 2
+        };
+        nextPositions.push(this.convertToChessNotation(nextPosNumeric));
+      }
+    }
+
+    // Attack moves
+    nextPosNumeric = {
+      x: pos.x + 1,
+      y: pos.y + 1
+    };
+    if (this.isWithinTable(nextPosNumeric)) nextPositions.push(this.convertToChessNotation(nextPosNumeric));
+
+    nextPosNumeric = {
+      x: pos.x - 1,
+      y: pos.y + 1
+    };
+    if (this.isWithinTable(nextPosNumeric)) nextPositions.push(this.convertToChessNotation(nextPosNumeric));
 
     return nextPositions;
   }

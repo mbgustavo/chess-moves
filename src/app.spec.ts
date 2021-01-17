@@ -132,6 +132,29 @@ describe('King Possible Positions Request', () => {
   });
 });
 
+describe('Pawn Possible Positions Request', () => {
+  const path = '/positions';
+  const pieceName = 'pawn';
+
+  it('Should return the positions for a pawn near the corner on its first move on call', async () => {
+    return chai
+      .request(app)
+      .get(`${path}/${pieceName}&A2`)
+      .then(res => {
+        chai.expect(res.body.data).to.have.members(['A3', 'A4', 'B3']);
+      });
+  });
+
+  it('Should return positions for a pawn in the middle of the table', async () => {
+    return chai
+      .request(app)
+      .get(`${path}/${pieceName}&C4`)
+      .then(res => {
+        chai.expect(res.body.data).to.have.members(['C5', 'B5', 'D5']);
+      });
+  });
+});
+
 describe('Invalid requests', () => {
   const path = '/positions';
 

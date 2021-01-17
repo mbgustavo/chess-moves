@@ -128,6 +128,5 @@ Após realizade o *merge*, será criada uma tag com o mesmo número descrito no 
 
 ## Próximos Passos
 
-- Para calcular o movimento de peões, diferentes situações devem ser consideradas, pois os mesmos possuem movimento estrito para frente, podendo se movimentar duas casas para frente se for seu primeiro movimento, enquanto que o ataque à outras peças só pode ser realizado na diagonal (algumas dessas propriedades já estão presentes em forma de comentário em **src/controllers/PositionsController.ts**);
 - Considerar a presença de outras peças no tabuleiro, verificando se as mesmas são aliadas ou inimigas; pois se forem amigas, o movimento é impossível, se forem inimigas, o movimento termina ali eliminando aquela peça (lembrar de considerar o movimento dos peões para ataque);
 - ...
